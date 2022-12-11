@@ -10,5 +10,6 @@ run-go: ## Run natively
 .PHONY: run
 run: ## Run in Webassembly
 	docker build . -t game
-	docker run -d -p 8081:80 -v $(pwd)://usr/share/nginx/html game
+	(docker stop game && docker rm game) || true
+	docker run --name game -d -p 8081:80 game
 	@echo Now open: http://localhost:8081
