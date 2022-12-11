@@ -1,12 +1,14 @@
-FROM golang:1.19 as builder
+FROM golang:1.19-alpine as builder
+# https://ebitengine.org/en/documents/install.html
+RUN apk add alsa-lib-dev libx11-dev libxrandr-dev libxcursor-dev libxinerama-dev libxi-dev mesa-dev pkgconf \
+        git
 
 RUN mkdir /build
-COPY main.go go.mod internal /build/
-#COPY internal /build
+COPY . /build/
 
 RUN cd /build && \
     go mod tidy && \
-    env GOOS=js GOARCH=wasm go build -o /build/app.wasm ./main.go
+    env GOOS=js GOARCH=wasm go build -o app.wasm ./main.go
 
 FROM nginx
 
