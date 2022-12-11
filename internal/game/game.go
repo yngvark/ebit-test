@@ -5,6 +5,7 @@ import (
 	_ "embed"
 	"fmt"
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"image"
 )
 
@@ -48,6 +49,7 @@ func (g Game) Update() error {
 }
 
 func (g Game) Draw(screen *ebiten.Image) {
+	ebitenutil.DebugPrint(screen, "Hello, World!")
 	screen.DrawImage(ebitenImage, nil)
 }
 
