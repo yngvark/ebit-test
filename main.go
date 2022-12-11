@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/hajimehoshi/ebiten/v2"
-	game2 "yngvark.com/ebiten-test/internal/game"
+	game2 "github.com/yngvark/ebiten-test/internal/game"
 )
 
 func main() {

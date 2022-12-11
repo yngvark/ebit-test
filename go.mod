@@ -1,4 +1,4 @@
-module yngvark.com/ebiten-test
+module github.com/yngvark/ebiten-test
 
 go 1.19
 
