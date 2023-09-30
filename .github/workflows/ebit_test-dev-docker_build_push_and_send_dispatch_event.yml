@@ -25,7 +25,9 @@ jobs:
 
   docker-build-push:
     permissions:
-      id-token: write # For the GitHub's OIDC Token endpoint
+      id-token: write
+      contents: read
+      packages: write
     name: Build and push Docker image
     uses: oslokommune/reusable-docker-build-push/.github/workflows/reusable-docker-build-push.yml@8fca36e815c8a6ff5e6aad2b1e44a12e4511cda7 # v1.1.0
     with:
