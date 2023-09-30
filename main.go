@@ -1,11 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"github.com/hajimehoshi/ebiten/v2"
 	game2 "github.com/yngvark/ebiten-test/internal/game"
 )
 
 func main() {
+	fmt.Println("Hello!")
+
 	ebiten.SetWindowSize(640, 480)
 	ebiten.SetWindowTitle("Sprite Test lol")
 
