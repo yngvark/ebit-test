@@ -10,8 +10,8 @@ on:
     paths:
       - 'Dockerfile'
       - '*.go'
-      - 'internal/**'
       - 'web/**'
+      - 'internal/**'
 
 env:
   AWS_REGION: eu-west-1
@@ -29,10 +29,8 @@ jobs:
     # https://github.com/oslokommune/reusable-docker-build-push/blob/main/.github/workflows/reusable-docker-build-push.yml
     name: Build and push Docker image
     uses: oslokommune/reusable-docker-build-push/.github/workflows/reusable-docker-build-push.yml@8fca36e815c8a6ff5e6aad2b1e44a12e4511cda7 # v1.1.0
-    secrets:
-      AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
     with:
-      ghcr_image_name: ghcr.io/yngvark/${{ env.APP_NAME }}:${{ github.sha }}
+      ghcr_image_name: ghcr.io/yngvark/ebit-test:${{ github.sha }}
       ghcr_enable: true
       push: true
 #
