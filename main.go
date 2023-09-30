@@ -13,12 +13,12 @@ func main() {
 	var hey string
 	e, got := os.LookupEnv("HEY")
 	if got {
-		fmt.Println("HEY:", e)
 		hey = e
 	} else {
-		fmt.Println("not found: HEY")
-		hey = "not found: HEY"
+		hey = "not found"
 	}
+
+	fmt.Println(hey)
 
 	ebiten.SetWindowSize(640, 480)
 	ebiten.SetWindowTitle("Sprite Test lol")
