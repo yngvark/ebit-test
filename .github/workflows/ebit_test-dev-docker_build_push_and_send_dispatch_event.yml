@@ -33,6 +33,7 @@ jobs:
     with:
       ghcr_image_name: ghcr.io/yngvark/ebit-test:${{ github.sha }}
       ghcr_enable: true
+      aws_ecr_enable: false
       push: true
 #
 #
