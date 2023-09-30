@@ -24,9 +24,8 @@ env:
 jobs:
 
   docker-build-push:
-
-    # https://github.com/oslokommune/reusable-workflows/blob/main/.github/workflows/docker_build_push.yml
-    # https://github.com/oslokommune/reusable-docker-build-push/blob/main/.github/workflows/reusable-docker-build-push.yml
+    permissions:
+      id-token: write # For the GitHub's OIDC Token endpoint
     name: Build and push Docker image
     uses: oslokommune/reusable-docker-build-push/.github/workflows/reusable-docker-build-push.yml@8fca36e815c8a6ff5e6aad2b1e44a12e4511cda7 # v1.1.0
     with:
