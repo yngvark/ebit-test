@@ -14,15 +14,15 @@ import (
 //go:embed gopher.png
 var gopherPng []byte
 
-var ebitenImage *ebiten.Image
+var gopherImage *ebiten.Image
 
 type Game struct {
-	Hey string
+	Title string
 
 	inited bool
 
-	x float64
-	y float64
+	rectangleX float64
+	rectangleY float64
 }
 
 func (g *Game) init() error {
@@ -38,12 +38,14 @@ func (g *Game) init() error {
 	origEbitenImage := ebiten.NewImageFromImage(img)
 	w, h := origEbitenImage.Size()
 
-	ebitenImage = ebiten.NewImage(w, h)
-	ebitenImage.DrawImage(origEbitenImage, nil)
+	gopherImage = ebiten.NewImage(w, h)
 
 	return nil
 }
 
+// Update proceeds the game state.
+// Update is called every tick (1/60 [s] by default).
+// https://pkg.go.dev/github.com/hajimehoshi/ebiten/v2#section-readme
 func (g *Game) Update() error {
 	if !g.inited {
 		err := g.init()
@@ -52,28 +54,41 @@ func (g *Game) Update() error {
 		}
 	}
 
-	g.x += float64(rand.Intn(3)) - 1 // This will add -1, 0, or 1 to g.x
-	g.y += float64(rand.Intn(3)) - 1 // This will add -1, 0, or 1 to g.y
+	g.rectangleX += float64(rand.Intn(3)) - 1
+	g.rectangleY += float64(rand.Intn(3)) - 1
 
 	return nil
 }
 
+// Draw draws the game screen.
+// Draw is called every frame (typically 1/60[s] for 60Hz display).
 func (g *Game) Draw(screen *ebiten.Image) {
-	// Fill the screen with a white color.
 	screen.Fill(color.White)
 
-	// Print some text
-	ebitenutil.DebugPrint(screen, fmt.Sprintf("Hello, World! Hey: %s", g.Hey))
+	ebitenutil.DebugPrint(screen, g.Title)
 
-	// Draw a still image
-	screen.DrawImage(ebitenImage, nil)
+	g.drawStillImage(screen)
+	g.drawMovingRectangle(screen)
+}
 
-	// Draw a moving rectangle (x and y coordinates, width, height).
+func (g *Game) drawStillImage(screen *ebiten.Image) {
+	screen.DrawImage(gopherImage, nil)
+}
+
+func (g *Game) drawMovingRectangle(screen *ebiten.Image) {
 	rect := ebiten.NewImage(50, 50)
 	rect.Fill(color.NRGBA{R: 0x80, G: 0, B: 0, A: 0xff})
 
+	screenWidth, screenHeight := screen.Size()
+	rectangleWidth, rectangleHeight := rect.Size()
+
+	// Calculate the x and y coordinates to draw the image at the center of the window.
+	x := float64(screenWidth/2-rectangleWidth/2) + g.rectangleX
+	y := float64(screenHeight/2-rectangleHeight/2) + g.rectangleY
+
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(g.x, g.y)
+	op.GeoM.Translate(x, y)
+
 	screen.DrawImage(rect, op)
 }
 

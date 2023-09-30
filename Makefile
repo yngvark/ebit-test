@@ -15,6 +15,8 @@ run-go: ## Run natively
 .PHONY: run
 run: ## Run in Docker, and with Webassembly
 	docker build . -t game
-	(docker stop game && docker rm game) || true
-	docker run --name game -d -p 8081:8080 game
 	@echo Now open: http://localhost:8081
+	docker run --rm -p 8081:8080 game
+
+
+# docker run --rm -p 8081:8080 ghcr.io/yngvark/ebit-test:sha-304c932e70c930c29a5715dbf83b4ae96accd776
