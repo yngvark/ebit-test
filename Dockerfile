@@ -10,7 +10,9 @@ RUN cd /build && \
     go mod tidy && \
     env GOOS=js GOARCH=wasm go build -o app.wasm ./main.go
 
-FROM nginx
+# Use a non root, unprivileged nginx
+# https://hub.docker.com/r/nginxinc/nginx-unprivileged
+FROM nginxinc/nginx-unprivileged:1.25.1-alpine
 
 COPY web/mime.types etc/nginx/mime.types
 COPY web/index.html web/wasm_exec.js    /usr/share/nginx/html/
