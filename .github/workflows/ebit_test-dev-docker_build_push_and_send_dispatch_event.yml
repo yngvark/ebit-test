@@ -31,7 +31,7 @@ jobs:
     name: Build and push Docker image
     uses: oslokommune/reusable-docker-build-push/.github/workflows/reusable-docker-build-push.yml@8fca36e815c8a6ff5e6aad2b1e44a12e4511cda7 # v1.1.0
     with:
-      ghcr_image_name: yngvark/ebit-test:${{ github.sha }}
+      ghcr_image_name: yngvark/ebit-test
       ghcr_enable: true
       aws_ecr_enable: false
       push: true
