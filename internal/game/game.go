@@ -17,6 +17,8 @@ var gopherPng []byte
 var ebitenImage *ebiten.Image
 
 type Game struct {
+	Hey string
+
 	inited bool
 
 	x float64
@@ -61,7 +63,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	screen.Fill(color.White)
 
 	// Print some text
-	ebitenutil.DebugPrint(screen, "Hello, World!")
+	ebitenutil.DebugPrint(screen, fmt.Sprintf("Hello, World! Hey: %s", g.Hey))
 
 	// Draw a still image
 	screen.DrawImage(ebitenImage, nil)

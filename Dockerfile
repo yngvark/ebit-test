@@ -18,3 +18,5 @@ COPY web/mime.types etc/nginx/mime.types
 COPY web/index.html web/wasm_exec.js    /usr/share/nginx/html/
 
 COPY --from=builder /build/app.wasm     /usr/share/nginx/html/app.wasm
+
+ENV HEY=nothing
