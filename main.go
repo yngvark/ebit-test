@@ -9,12 +9,11 @@ import (
 func main() {
 	fmt.Println("Hello!")
 
-	ebiten.SetWindowSize(640, 480)
-	ebiten.SetWindowTitle("Sprite Test lol")
-
 	game := &game2.Game{
 		Title: "0.0.1",
 	}
+
+	game.Init()
 
 	if err := ebiten.RunGame(game); err != nil {
 		panic(err)

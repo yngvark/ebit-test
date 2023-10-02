@@ -6,15 +6,21 @@ import (
 	"fmt"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/yngvark/ebiten-test/internal/game/tiles"
 	"image"
 	"image/color"
 	"math/rand"
 )
 
+const tileSize = 48
+const scale = 5
+
 //go:embed gopher.png
 var gopherPng []byte
 
+// Images
 var gopherImage *ebiten.Image
+var middleRectangle *ebiten.Image
 
 type Game struct {
 	Title string
@@ -30,15 +36,19 @@ func (g *Game) init() error {
 		g.inited = true
 	}()
 
-	img, _, err := image.Decode(bytes.NewReader(gopherPng))
+	// Gopher
+	gopherImageSource, _, err := image.Decode(bytes.NewReader(gopherPng))
 	if err != nil {
 		return fmt.Errorf("decoding image: %w", err)
 	}
 
-	origEbitenImage := ebiten.NewImageFromImage(img)
-	w, h := origEbitenImage.Size()
+	gopherImage = ebiten.NewImageFromImage(gopherImageSource)
 
-	gopherImage = ebiten.NewImage(w, h)
+	// Middle rectangle
+	middleRectangle = ebiten.NewImage(50, 50)
+	middleRectangle.Fill(color.NRGBA{R: 0x80, G: 0, B: 0, A: 0xff})
+
+	tiles.Init()
 
 	return nil
 }
@@ -68,6 +78,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	ebitenutil.DebugPrint(screen, g.Title)
 
 	g.drawStillImage(screen)
+	tiles.Draw(screen)
 	g.drawMovingRectangle(screen)
 }
 
@@ -76,11 +87,8 @@ func (g *Game) drawStillImage(screen *ebiten.Image) {
 }
 
 func (g *Game) drawMovingRectangle(screen *ebiten.Image) {
-	rect := ebiten.NewImage(50, 50)
-	rect.Fill(color.NRGBA{R: 0x80, G: 0, B: 0, A: 0xff})
-
 	screenWidth, screenHeight := screen.Size()
-	rectangleWidth, rectangleHeight := rect.Size()
+	rectangleWidth, rectangleHeight := middleRectangle.Size()
 
 	// Calculate the x and y coordinates to draw the image at the center of the window.
 	x := float64(screenWidth/2-rectangleWidth/2) + g.rectangleX
@@ -89,9 +97,23 @@ func (g *Game) drawMovingRectangle(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(x, y)
 
-	screen.DrawImage(rect, op)
+	screen.DrawImage(middleRectangle, op)
 }
 
+//func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
+//	return 320, 240
+//}
+
+// Layout takes the outside size (e.g., the window size) and returns the (logical) screen size.
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
-	return 320, 240
+	return tiles.WorldMapWidth() * tileSize, tiles.WorldMapHeight() * tileSize
+}
+
+func (g *Game) Init() {
+	screenWidth := tiles.WorldMapWidth() * tileSize
+	screenHeight := tiles.WorldMapHeight() * tileSize
+
+	ebiten.SetWindowSize(screenWidth*scale, screenHeight*scale)
+	//ebiten.SetWindowSize(len(worldMap[0])*tileSize, len(worldMap)*tileSize)
+	ebiten.SetWindowTitle("Sprite Test lol")
 }
